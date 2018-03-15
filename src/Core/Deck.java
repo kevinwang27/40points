@@ -33,6 +33,25 @@ public class Deck {
         return cards.size() <= 6;
     }
 
+    public void displayLastSix() {
+        assert sixLeft();
+        System.out.println("Bottom six cards are: " + cards);
+    }
+
+    public Card.Suit decideTrumpFromLastSix(int trumpTier) {
+        assert sixLeft();
+        Card maxCard = cards.get(0);
+        for (Card card : cards) {
+            if (card.value == trumpTier) {
+                return card.suit;
+            }
+            if (card.value > maxCard.value) {
+                maxCard = card;
+            }
+        }
+        return maxCard.suit;
+    }
+
     public boolean isEmpty() {
         return cards.isEmpty();
     }
