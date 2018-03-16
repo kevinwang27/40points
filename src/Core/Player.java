@@ -29,4 +29,10 @@ public class Player {
     public void sortHand() {
         Collections.sort(hand);
     }
+
+    public Card playCard(int index) {
+        Card card = hand.remove(index);
+        System.out.println(card);
+        return card;
+    }
 }

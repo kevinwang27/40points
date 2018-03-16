@@ -61,7 +61,11 @@ public class Game {
     }
 
     private void playRound(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit) {
-        
+        ArrayList<Card> roundCards = new ArrayList<>();
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Which card do you want to play?");
+        roundCards.add(firstPair.players[0].playCard(reader.nextInt()));
+        reader.close();
     }
 
     /* Players take turn drawing until six cards are left.
@@ -94,6 +98,7 @@ public class Game {
             deck.displayLastSix();
             trumpSuit = deck.decideTrumpFromLastSix(trumpTier);
         }
+        reader.close();
         return trumpSuit;
     }
 
