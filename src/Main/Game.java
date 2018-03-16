@@ -51,11 +51,17 @@ public class Game {
     }
 
     private Pair play(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, Card[] pile) {
-        // add jokers
         while (firstPair.players[0].hand.size() > 0) {
-
+            playRound(firstPair, secondPair, trumpTier, trumpSuit);
+        }
+        if (secondPair.points >= 40) {
+            return secondPair;
         }
         return firstPair;
+    }
+
+    private void playRound(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit) {
+        
     }
 
     /* Players take turn drawing until six cards are left.
