@@ -12,14 +12,25 @@ public class Card implements Comparable<Card> {
     }
 
     public String toString() {
-        return value + " of " + suit.toString();
+        if (suit != null) {
+            return value + " of " + suit.toString();
+        }
+        if (value == 15) {
+            return "SMALL JOKER";
+        }
+        return "LARGE JOKER";
     }
 
     @Override
     public int compareTo(Card card) {
         if (this.suit == card.suit) {
             return this.value - card.value;
-        } else if (this.suit == Suit.SPADES) {
+        } else if (this.value == 15 || this.value == 16) {
+            return 1;
+        } else if (card.value == 15 || card.value == 16) {
+            return -1;
+        }
+        else if (this.suit == Suit.SPADES) {
             return -1;
         } else if (this.suit == Suit.DIAMONDS) {
             return 1;

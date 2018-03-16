@@ -46,12 +46,16 @@ public class Game {
         Card[] pile = chooseSixPile(firstPair.players[0]);
         printHand(firstPair.players[0]);
 
-        Pair winner = play(firstPair, secondPair, trumpTier, trumpSuit, pile);
-        return winner;
+        //Pair winner = play(firstPair, secondPair, trumpTier, trumpSuit, pile);
+        return firstPair;
     }
 
     private Pair play(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, Card[] pile) {
-        
+        // add jokers
+        while (firstPair.players[0].hand.size() > 0) {
+
+        }
+        return firstPair;
     }
 
     /* Players take turn drawing until six cards are left.

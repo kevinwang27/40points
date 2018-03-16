@@ -10,6 +10,8 @@ public class Deck {
         for (Card.Suit s : Card.Suit.getSuits()) {
             fillDeck(s);
         }
+        cards.add(new Card(15, null, 0));
+        cards.add(new Card(16, null, 0));
     }
 
     /* fills the deck with a particular suit of cards */
