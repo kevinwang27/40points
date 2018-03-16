@@ -1,6 +1,6 @@
 package Core;
 
-public class Card {
+public class Card implements Comparable<Card> {
     public int value;
     public Suit suit;
     public int points;
@@ -13,6 +13,25 @@ public class Card {
 
     public String toString() {
         return value + " of " + suit.toString();
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if (this.suit == card.suit) {
+            return this.value - card.value;
+        } else if (this.suit == Suit.SPADES) {
+            return -1;
+        } else if (this.suit == Suit.DIAMONDS) {
+            return 1;
+        } else if (card.suit == Suit.SPADES) {
+            return 1;
+        } else if (card.suit == Suit.DIAMONDS) {
+            return -1;
+        } else if (this.suit == Suit.HEARTS) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public enum Suit {

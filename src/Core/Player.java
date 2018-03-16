@@ -1,6 +1,7 @@
 package Core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Player {
@@ -15,11 +16,17 @@ public class Player {
         int index = (new Random()).nextInt(deck.cards.size());
         Card card = deck.cards.remove(index);
         hand.add(card);
+        sortHand();
         return card;
     }
 
     public void drawLastSix(Deck deck) {
         hand.addAll(deck.cards);
         deck.cards.clear();
+        sortHand();
+    }
+
+    public void sortHand() {
+        Collections.sort(hand);
     }
 }

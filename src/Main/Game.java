@@ -5,6 +5,8 @@ import Core.Deck;
 import Core.Pair;
 import Core.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Game {
@@ -36,7 +38,20 @@ public class Game {
         Deck deck = new Deck();
         int trumpTier = firstPair.tier;
         Card.Suit trumpSuit = drawUntilSix(firstPair, secondPair, deck, trumpTier);
-        return firstPair;
+        System.out.println("Trump suit is: " + trumpSuit);
+
+        firstPair.players[0].drawLastSix(deck);
+        printHand(firstPair.players[0]);
+
+        Card[] pile = chooseSixPile(firstPair.players[0]);
+        printHand(firstPair.players[0]);
+
+        Pair winner = play(firstPair, secondPair, trumpTier, trumpSuit, pile);
+        return winner;
+    }
+
+    private Pair play(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, Card[] pile) {
+        
     }
 
     /* Players take turn drawing until six cards are left.
@@ -69,8 +84,27 @@ public class Game {
             deck.displayLastSix();
             trumpSuit = deck.decideTrumpFromLastSix(trumpTier);
         }
-        System.out.println("Trump suit is: " + trumpSuit);
         return trumpSuit;
+    }
+
+    private Card[] chooseSixPile(Player player) {
+        Card[] pile = new Card[6];
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Enter indexes of cards you want to put in pile");
+        String[] numbers = reader.nextLine().split(" ");
+        while (numbers.length != 6) {
+            System.out.println("Please enter *6* numbers");
+            numbers = reader.nextLine().split(" ");
+        }
+        ArrayList<Integer> ints = new ArrayList<>();
+        for (int i = 0; i < numbers.length; i++) {
+            ints.add(Integer.valueOf(numbers[i]));
+        }
+        ints.sort(Collections.reverseOrder());
+        for (int i = 0; i < ints.size(); i++) {
+            pile[i] = player.hand.remove((int) ints.get(i));
+        }
+        return pile;
     }
 
     private void printHand(Player player) {
