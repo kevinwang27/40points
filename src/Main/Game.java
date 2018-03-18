@@ -1,13 +1,6 @@
 package Main;
 
-import Core.Card;
-import Core.Deck;
 import Core.Pair;
-import Core.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
 
 public class Game {
     public Pair pair1_3;

@@ -3,7 +3,6 @@ package Main;
 import Core.Card;
 import Core.Deck;
 import Core.Pair;
-import Core.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,7 @@ public class Tier {
     private int trumpTier;
     private Card.Suit trumpSuit;
     private Card[] pile;
-    private Scanner reader; // close once im done
+    private Scanner reader;
 
     public Tier(Pair firstPair, Pair secondPair) {
         deck = new Deck();
@@ -29,12 +28,34 @@ public class Tier {
     /* play a single tier and return the winning pair */
     public Pair playTier() {
         drawCards();
-        printPlayerOneHand();
-        // play the round
+        Pair winnerPair = playRounds();
         clearHands();
+        reader.close();
+        return winnerPair;
+    }
+
+    /* play the rounds of the tier */
+    private Pair playRounds() {
+        Pair winnerPair = firstPair;
+        Pair loserPair = secondPair;
+        while (!tierOver()) {
+            System.out.println("Next Round:");
+            Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, firstPair);
+            winnerPair = round.playRound();
+            printPlayerOneHand();
+            if (winnerPair == firstPair) {
+                loserPair = secondPair;
+            } else {
+                loserPair = firstPair;
+            }
+        }
+        if (secondPair.points >= 40) {
+            return secondPair;
+        }
         return firstPair;
     }
 
+    /* clear all players' hands to prep for next tier */
     private void clearHands() {
         for (int i = 0; i < firstPair.players.length; i++) {
             firstPair.players[i].hand.clear();
@@ -48,6 +69,7 @@ public class Tier {
         drawUntilSix();
         firstPair.players[0].drawLastSix(deck);
         playerOneChooseSixPile();
+        printPlayerOneHand();
     }
 
     /* Players take turn drawing until six cards are left. */
@@ -113,12 +135,12 @@ public class Tier {
         System.out.println(firstPair.players[0].hand);
     }
 
-    private void playRound(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit) {
-        ArrayList<Card> roundCards = new ArrayList<>();
-        Scanner reader = new Scanner(System.in);
-        System.out.println("Which card do you want to play?");
-        roundCards.add(firstPair.players[0].playCard(reader.nextInt()));
-        reader.close();
+    /* test if the tier is completed */
+    private boolean tierOver() {
+        return firstPair.players[0].hand.isEmpty() &&
+                secondPair.players[0].hand.isEmpty() &&
+                firstPair.players[1].hand.isEmpty() &&
+                secondPair.players[1].hand.isEmpty();
     }
 
 }

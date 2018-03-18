@@ -2,6 +2,7 @@ package Core;
 
 import Core.Card;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Deck {
     public ArrayList<Card> cards = new ArrayList<>();
@@ -43,11 +44,14 @@ public class Deck {
     public Card.Suit decideTrumpFromLastSix(int trumpTier) {
         assert sixLeft();
         Card maxCard = cards.get(0);
+        for (int i = 1; maxCard.value == 16 || maxCard.value == 15; i++) {
+            maxCard = cards.get(i);
+        }
         for (Card card : cards) {
             if (card.value == trumpTier) {
                 return card.suit;
             }
-            if (card.value > maxCard.value) {
+            if (card.value > maxCard.value && card.value != 16 && card.value != 15) {
                 maxCard = card;
             }
         }
