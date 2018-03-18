@@ -12,7 +12,6 @@ public class Round {
     private int trumpTier;
     private Card.Suit trumpSuit;
     private ArrayList<Card> roundCards;
-    private Scanner reader;
     private Pair pairWithPlayerOne;
 
     public Round(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, Pair pairWithPlayerOne) {
@@ -21,15 +20,14 @@ public class Round {
         this.trumpTier = trumpTier;
         this.trumpSuit = trumpSuit;
         roundCards = new ArrayList<>();
-        reader = new Scanner(System.in);
         this.pairWithPlayerOne = pairWithPlayerOne;
     }
 
     /* all players play a card in order
      * add the points to the winning pair and return the winner */
-    public Pair playRound() {
+    public Pair playRound(Scanner reader) {
         if (firstPair == pairWithPlayerOne) {
-            roundCards.add(promptPlayerOnePlay());
+            roundCards.add(promptPlayerOnePlay(reader));
             roundCards.add(secondPair.players[0].playCard(0));
             roundCards.add(firstPair.players[1].playCard(0));
             roundCards.add(secondPair.players[1].playCard(0));
@@ -38,14 +36,13 @@ public class Round {
             return winnerPair;
         } else {
             roundCards.add(firstPair.players[0].playCard(0));
-            roundCards.add(promptPlayerOnePlay());
+            roundCards.add(promptPlayerOnePlay(reader));
             roundCards.add(firstPair.players[1].playCard(0));
             roundCards.add(secondPair.players[1].playCard(0));
             Pair winnerPair = evaluateRoundWinner(roundCards, secondPair);
             winnerPair.addPoints(evaluateRoundPoints(roundCards));
             return winnerPair;
         }
-
     }
 
     /* evaluate how many points the round was worth */
@@ -90,7 +87,7 @@ public class Round {
     }
 
     /* Prompt player one to play and return the card played */
-    private Card promptPlayerOnePlay() {
+    private Card promptPlayerOnePlay(Scanner reader) {
         System.out.println("Enter index of card to play");
         int index = reader.nextInt();
         while (index < 0 || index >= pairWithPlayerOne.players[0].hand.size()) {

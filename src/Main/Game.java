@@ -2,6 +2,8 @@ package Main;
 
 import Core.Pair;
 
+import java.util.Scanner;
+
 public class Game {
     public Pair pair1_3;
     public Pair pair2_4;
@@ -15,6 +17,7 @@ public class Game {
         Pair tierWinner = pair1_3;
         Pair tierLoser = pair2_4;
         while (!gameOver()) {
+            System.out.println("New Game:\n");
             Tier tier = new Tier(tierWinner, tierLoser);
             tierWinner = tier.playTier();
             if (tierWinner == pair1_3) {

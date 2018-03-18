@@ -30,7 +30,6 @@ public class Tier {
         drawCards();
         Pair winnerPair = playRounds();
         clearHands();
-        reader.close();
         return winnerPair;
     }
 
@@ -39,9 +38,9 @@ public class Tier {
         Pair winnerPair = firstPair;
         Pair loserPair = secondPair;
         while (!tierOver()) {
-            System.out.println("Next Round:");
+            System.out.println("Next Round:\n");
             Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, firstPair);
-            winnerPair = round.playRound();
+            winnerPair = round.playRound(reader);
             printPlayerOneHand();
             if (winnerPair == firstPair) {
                 loserPair = secondPair;
@@ -132,7 +131,7 @@ public class Tier {
 
     /* prints player one's hand */
     private void printPlayerOneHand() {
-        System.out.println(firstPair.players[0].hand);
+        System.out.println("Hand: " + firstPair.players[0].hand);
     }
 
     /* test if the tier is completed */
