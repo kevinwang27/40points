@@ -24,6 +24,7 @@ public class Player {
         hand.addAll(deck.cards);
         deck.cards.clear();
         sortHand();
+        System.out.println(hand);
     }
 
     public void sortHand() {

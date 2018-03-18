@@ -12,4 +12,9 @@ public class Pair {
         tier = 2;
         points = 0;
     }
+
+    /* increment the pair's tier when they win */
+    public void incrementTier() {
+        this.tier += 1;
+    }
 }
