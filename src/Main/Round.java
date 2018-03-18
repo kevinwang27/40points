@@ -31,18 +31,15 @@ public class Round { // make game more user friendly (display info), evaluate wi
             roundCards.add(secondPair.players[0].playCard(0));
             roundCards.add(firstPair.players[1].playCard(0));
             roundCards.add(secondPair.players[1].playCard(0));
-            Pair winnerPair = evaluateRoundWinner(roundCards, firstPair);
-            winnerPair.addPoints(evaluateRoundPoints(roundCards));
-            return winnerPair;
         } else {
             roundCards.add(firstPair.players[0].playCard(0));
             roundCards.add(promptPlayerOnePlay(reader));
             roundCards.add(firstPair.players[1].playCard(0));
             roundCards.add(secondPair.players[1].playCard(0));
-            Pair winnerPair = evaluateRoundWinner(roundCards, secondPair);
-            winnerPair.addPoints(evaluateRoundPoints(roundCards));
-            return winnerPair;
         }
+        Pair winnerPair = evaluateRoundWinner(roundCards);
+        winnerPair.addPoints(evaluateRoundPoints(roundCards));
+        return winnerPair;
     }
 
     /* evaluate how many points the round was worth */
@@ -60,27 +57,44 @@ public class Round { // make game more user friendly (display info), evaluate wi
     }
 
     /* evaluate who won the round based on suit, value, etc */
-    private Pair evaluateRoundWinner(ArrayList<Card> roundCards, Pair pairWithPlayerOne) {
+    private Pair evaluateRoundWinner(ArrayList<Card> roundCards) {
         int index = indexOfWinner(roundCards);
-        if (firstPair == pairWithPlayerOne) {
-            if (index == 0 || index == 2) {
-                return firstPair;
-            }
-            return secondPair;
-        } else {
-            if (index == 1 || index == 3) {
-                return firstPair;
-            }
-            return secondPair;
+        if (index == 0 || index == 2) {
+            return firstPair;
         }
+        return secondPair;
     }
 
-    /* return the index of the winning card in roundCards */
+    /* return the index of the winning card in roundCards
+     * based on rules of 40 points */
     private int indexOfWinner(ArrayList<Card> roundCards) {
         int maxIndex = 0;
-        for (int i = 0; i < roundCards.size(); i++) {
-            if (roundCards.get(i).value > roundCards.get(maxIndex).value) {
-                maxIndex = i;
+        Card maxCard = roundCards.get(0);
+        Card initialCard = roundCards.get(0);
+        for (int i = 1; i < roundCards.size(); i++) {
+            Card card = roundCards.get(i);
+            /* playing trump suit */
+            if (initialCard.suit == trumpSuit || initialCard.value == trumpTier || initialCard.value >= 15 ||
+                    maxCard.suit == trumpSuit || maxCard.value == trumpTier || maxCard.value >= 15) {
+                if (card.value > maxCard.value && maxCard.value != trumpTier && card.suit == trumpSuit) {
+                    maxIndex = i;
+                    maxCard = card;
+                } else if (maxCard.value == trumpTier && (card.value >= 15 ||
+                        (maxCard.suit != trumpSuit && card.suit == trumpSuit && card.value == trumpTier))) {
+                    maxIndex = i;
+                    maxCard = card;
+                } else if (card.value == trumpTier && maxCard.value < 15 && maxCard.value != trumpTier) {
+                    maxIndex = i;
+                    maxCard = card;
+                }
+            } else {
+                if (card.suit == trumpSuit || card.value >= 15 || card.value == trumpTier) {
+                    maxIndex = i;
+                    maxCard = card;
+                } else if (card.value > maxCard.value && card.suit == initialCard.suit) {
+                    maxIndex = i;
+                    maxCard = card;
+                }
             }
         }
         return maxIndex;

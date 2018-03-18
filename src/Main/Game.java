@@ -13,19 +13,32 @@ public class Game {
 
     /* play the game */
     public void start() {
+        Pair lastWinner;
         Pair tierWinner = pair1_3;
         Pair tierLoser = pair2_4;
         while (!gameOver()) {
             System.out.println("New Game:\n");
+            System.out.println("Current tier: " + tierWinner.tier);
             Tier tier = new Tier(tierWinner, tierLoser);
+            lastWinner = tierWinner;
             tierWinner = tier.playTier();
+            printPoints();
             if (tierWinner == pair1_3) {
+                System.out.println("Winner is Players 1 + 3");
                 tierLoser = pair2_4;
             } else {
+                System.out.println("Winner is Players 2 + 4");
                 tierLoser = pair1_3;
             }
-            tierWinner.incrementTier();
+            if (tierWinner == lastWinner) {
+                tierWinner.incrementTier();
+            }
         }
+    }
+
+    /* print end-of-tier point standings */
+    private void printPoints() {
+        System.out.println("Points:\nPlayers 1 + 3: " + pair1_3.points + "\nPlayers 2 + 4: " + pair2_4.points);
     }
 
     /* test if the game is over */

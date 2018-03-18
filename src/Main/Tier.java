@@ -105,7 +105,7 @@ public class Tier {
                 break;
             }
         }
-        return false;
+        return suitPicked;
     }
 
     /* Player one chooses the six cards to set aside
