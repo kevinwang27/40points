@@ -37,10 +37,12 @@ public class Tier {
     private Pair playRounds() {
         Pair winnerPair = firstPair;
         Pair loserPair = secondPair;
+        int playerOneIndex = 0;
         while (!tierOver()) {
             System.out.println("Next Round:\n");
-            Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, firstPair);
+            Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, firstPair, playerOneIndex);
             winnerPair = round.playRound(reader);
+            playerOneIndex = round.getPlayerOneIndex();
             printPlayerOneHand();
             if (winnerPair == firstPair) {
                 loserPair = secondPair;
