@@ -6,7 +6,7 @@ import Core.Pair;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Round { // make game more user friendly (display info), evaluate winner based on suit, restrict comp play
+public class Round { // restrict cards able to be played, computer calls trumpsuit, player starting order
     private Pair firstPair;
     private Pair secondPair;
     private int trumpTier;
