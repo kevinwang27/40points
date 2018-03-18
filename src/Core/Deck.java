@@ -1,8 +1,6 @@
 package Core;
 
-import Core.Card;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Deck {
     public ArrayList<Card> cards = new ArrayList<>();
@@ -32,15 +30,18 @@ public class Deck {
         }
     }
 
+    /* test if six are left */
     public boolean sixLeft() {
         return cards.size() <= 6;
     }
 
+    /* show the last six cards */
     public void displayLastSix() {
         assert sixLeft();
         System.out.println("Bottom six cards are: " + cards);
     }
 
+    /* when noo one calls, this method looks at the last six and decides the trump suit */
     public Card.Suit decideTrumpFromLastSix(int trumpTier) {
         assert sixLeft();
         Card maxCard = cards.get(0);
@@ -56,9 +57,5 @@ public class Deck {
             }
         }
         return maxCard.suit;
-    }
-
-    public boolean isEmpty() {
-        return cards.isEmpty();
     }
 }

@@ -2,8 +2,6 @@ package Main;
 
 import Core.Pair;
 
-import java.util.Scanner;
-
 public class Game {
     public Pair pair1_3;
     public Pair pair2_4;
@@ -13,6 +11,7 @@ public class Game {
         this.pair2_4 = pair2_4;
     }
 
+    /* play the game */
     public void start() {
         Pair tierWinner = pair1_3;
         Pair tierLoser = pair2_4;
@@ -29,11 +28,9 @@ public class Game {
         }
     }
 
+    /* test if the game is over */
     private boolean gameOver() {
         return pair1_3.tier > 14 || pair2_4.tier > 14;
     }
-
-
-
 
 }

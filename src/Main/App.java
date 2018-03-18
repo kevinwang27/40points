@@ -1,9 +1,11 @@
 package Main;
 
-import Core.Deck;
 import Core.Pair;
 import Core.Player;
 
+/*
+ * Main class for running the game
+ */
 public class App {
     public static void main(String[] args) {
         Player player1 = new Player();

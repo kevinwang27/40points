@@ -18,6 +18,7 @@ public class Pair {
         this.tier += 1;
     }
 
+    /* add points to the pair */
     public void addPoints(int points) {
         this.points += points;
     }
