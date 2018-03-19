@@ -31,15 +31,22 @@ public class Tier {
         this.indexOfFirstPlayer = indexOfFirstPlayer;
         this.orderOfPlayers = new ArrayList<>();
         setOrderOfPlayers();
+        clearHands();
+        clearPoints();
     }
 
     /* play a single tier and return the winning pair */
     public Pair playTier() {
         drawCards();
-        Pair winnerPair = playRounds();
-        clearHands();
-        clearPoints();
-        return winnerPair;
+        setHandSuits();
+        return playRounds();
+    }
+
+    private void setHandSuits() {
+        assert trumpSuit != null;
+        for (Player player : orderOfPlayers) {
+            player.setHandSuits(trumpSuit, trumpTier);
+        }
     }
 
     /* play the rounds of the tier */
@@ -112,7 +119,7 @@ public class Tier {
             if (player.getPlayerNum() == 1) {
                 suitPicked = promptPlayerOneDraw(suitPicked);
             } else {
-                player.drawCard(deck, trumpSuit, trumpTier);
+                player.drawCard(deck);
             }
         }
         return suitPicked;
@@ -123,7 +130,7 @@ public class Tier {
         System.out.println("Press enter to draw");
         while (true) {
             if (reader.nextLine().equals("")) {
-                Card card = firstPair.players[0].drawCard(deck, trumpSuit, trumpTier);
+                Card card = firstPair.players[0].drawCard(deck);
                 System.out.println("Card drawn: " + card.toString());
                 printPlayerOneHand();
                 if (card.value == trumpTier && !suitPicked) {

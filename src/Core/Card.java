@@ -25,9 +25,9 @@ public class Card implements Comparable<Card> {
     public int compareTo(Card card) {
         if (this.suit == card.suit) {
             return this.value - card.value;
-        } else if (this.value == 15 || this.value == 16) {
+        } else if (this.value >= 15) {
             return 1;
-        } else if (card.value == 15 || card.value == 16) {
+        } else if (card.value >= 15) {
             return -1;
         }
         else if (this.suit == Suit.SPADES) {
@@ -43,6 +43,10 @@ public class Card implements Comparable<Card> {
         } else {
             return 1;
         }
+    }
+
+    public boolean isTrump(Suit trumpSuit, int trumpTier) {
+        return (value >= 15 || value == trumpTier || suit == trumpSuit);
     }
 
     public enum Suit {

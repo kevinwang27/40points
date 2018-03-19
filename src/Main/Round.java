@@ -31,12 +31,55 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
             if (player.getPlayerNum() == 1) {
                 roundCards.add(promptPlayerOnePlay(reader));
             } else {
-                roundCards.add(player.playCard(0, trumpSuit, trumpTier));
+                ArrayList<Integer> indexes = indexesOfValidCards(player);
+                roundCards.add(player.playCard(indexes.get((int) (Math.random() * indexes.size())), trumpSuit, trumpTier));
             }
         }
         Pair winnerPair = evaluateRoundWinner(roundCards);
         winnerPair.addPoints(evaluateRoundPoints(roundCards));
         return winnerPair;
+    }
+
+    private ArrayList<Integer> indexesOfValidCards(Player player) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        /* going first */
+        if (roundCards.isEmpty()) {
+            /* all cards are valid first play */
+            for (int i = 0; i < player.hand.size(); i++) {
+                indexes.add(i);
+            }
+        } else {
+            Card initialCard = roundCards.get(0);
+            /* playing trump tier */
+            if (initialCard.isTrump(trumpSuit, trumpTier)) {
+                /* no more trump cards -> all cards are valid plays */
+                if (player.getHandSuits().get(Card.Suit.TRUMP) == 0) {
+                    for (int i = 0; i < player.hand.size(); i++) {
+                        indexes.add(i);
+                    }
+                } else {
+                    for (int i = 0; i < player.hand.size(); i++) {
+                        Card card = player.hand.get(i);
+                        if (card.isTrump(trumpSuit, trumpTier)) {
+                            indexes.add(i);
+                        }
+                    }
+                }
+                /* no more cards of original suit -> all cards are valid plays */
+            } else if (player.getHandSuits().get(initialCard.suit) == 0) {
+                for (int i = 0; i < player.hand.size(); i++) {
+                    indexes.add(i);
+                }
+            } else {
+                for (int i = 0; i < player.hand.size(); i++) {
+                    Card card = player.hand.get(i);
+                    if (card.suit == initialCard.suit && !card.isTrump(trumpSuit, trumpTier)) {
+                        indexes.add(i);
+                    }
+                }
+            }
+        }
+        return indexes;
     }
 
     /* returns the player one index */
@@ -81,8 +124,7 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
         for (int i = 1; i < roundCards.size(); i++) {
             Card card = roundCards.get(i);
             /* playing trump suit */
-            if (initialCard.suit == trumpSuit || initialCard.value == trumpTier || initialCard.value >= 15 ||
-                    maxCard.suit == trumpSuit || maxCard.value == trumpTier || maxCard.value >= 15) {
+            if (initialCard.isTrump(trumpSuit, trumpTier) || maxCard.isTrump(trumpSuit, trumpTier)) {
                 if (card.value > maxCard.value && maxCard.value != trumpTier && card.suit == trumpSuit) {
                     maxIndex = i;
                     maxCard = card;
@@ -94,8 +136,9 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
                     maxIndex = i;
                     maxCard = card;
                 }
+                /* not trump suit */
             } else {
-                if (card.suit == trumpSuit || card.value >= 15 || card.value == trumpTier) {
+                if (card.isTrump(trumpSuit, trumpTier)) {
                     maxIndex = i;
                     maxCard = card;
                 } else if (card.value > maxCard.value && card.suit == initialCard.suit) {
