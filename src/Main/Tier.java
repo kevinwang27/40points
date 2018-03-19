@@ -97,7 +97,6 @@ public class Tier {
         } else {
             compChooseSixPile(firstPlayer);
         }
-        System.out.println("Pile: " + pile);
         printPlayerOneHand();
     }
 
@@ -126,7 +125,7 @@ public class Tier {
         }
         return suitPicked;
     }
-    
+
     /* Prompt player one to draw and return whether a trump suit was picked */
     private boolean promptPlayerOneDraw(boolean suitPicked) {
         System.out.println("Press enter to draw");
