@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Round { // restrict cards able to be played, computer calls trumpsuit
+    private int trumpTier;
     private Pair firstPair;
     private Pair secondPair;
-    private int trumpTier;
     private Card.Suit trumpSuit;
     private ArrayList<Card> roundCards;
     private ArrayList<Player> orderOfPlayers;
 
-    public Round(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, ArrayList<Player> orderOfPlayers) {
+    Round(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, ArrayList<Player> orderOfPlayers) {
         this.firstPair = firstPair;
         this.secondPair = secondPair;
         this.trumpTier = trumpTier;
@@ -120,6 +120,7 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
         return card;
     }
 
+    /* returns the first player of the round */
     private Player getFirstPlayer() {
         for (Player player : orderOfPlayers) {
             if (player.getPlayerNum() == 1) {

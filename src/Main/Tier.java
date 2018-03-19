@@ -11,17 +11,17 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Tier {
+    private int indexOfFirstPlayer;
+    private int trumpTier;
     private Deck deck;
     private Pair firstPair;
     private Pair secondPair;
-    private int trumpTier;
+    private ArrayList<Player> orderOfPlayers;
     private Card.Suit trumpSuit;
     private Card[] pile;
     private Scanner reader;
-    private int indexOfFirstPlayer;
-    private ArrayList<Player> orderOfPlayers;
 
-    public Tier(Pair firstPair, Pair secondPair, int indexOfFirstPlayer) {
+    Tier(Pair firstPair, Pair secondPair, int indexOfFirstPlayer) {
         deck = new Deck();
         this.trumpTier = firstPair.tier;
         this.firstPair = firstPair;
@@ -31,14 +31,6 @@ public class Tier {
         this.indexOfFirstPlayer = indexOfFirstPlayer;
         this.orderOfPlayers = new ArrayList<>();
         setOrderOfPlayers();
-    }
-
-    /* set the order of the players based on indexOfFirstPlayer */
-    private void setOrderOfPlayers() {
-        orderOfPlayers.add(firstPair.players[indexOfFirstPlayer]);
-        orderOfPlayers.add(secondPair.players[indexOfFirstPlayer]);
-        orderOfPlayers.add(firstPair.players[1 - indexOfFirstPlayer]);
-        orderOfPlayers.add(secondPair.players[1 - indexOfFirstPlayer]);
     }
 
     /* play a single tier and return the winning pair */
@@ -185,6 +177,14 @@ public class Tier {
                 secondPair.players[0].hand.isEmpty() &&
                 firstPair.players[1].hand.isEmpty() &&
                 secondPair.players[1].hand.isEmpty();
+    }
+
+    /* set the order of the players based on indexOfFirstPlayer */
+    private void setOrderOfPlayers() {
+        orderOfPlayers.add(firstPair.players[indexOfFirstPlayer]);
+        orderOfPlayers.add(secondPair.players[indexOfFirstPlayer]);
+        orderOfPlayers.add(firstPair.players[1 - indexOfFirstPlayer]);
+        orderOfPlayers.add(secondPair.players[1 - indexOfFirstPlayer]);
     }
 
 }

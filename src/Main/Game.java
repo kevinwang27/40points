@@ -3,10 +3,10 @@ package Main;
 import Core.Pair;
 
 public class Game {
-    public Pair pair1_3;
-    public Pair pair2_4;
+    private Pair pair1_3;
+    private Pair pair2_4;
 
-    public Game(Pair pair1_3, Pair pair2_4) {
+    Game(Pair pair1_3, Pair pair2_4) {
         this.pair1_3 = pair1_3;
         this.pair2_4 = pair2_4;
     }
