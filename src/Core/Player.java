@@ -5,7 +5,13 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Player {
-    public ArrayList<Card> hand = new ArrayList<>();
+    public ArrayList<Card> hand;
+    private int playerNum;
+
+    public Player(int playerNum) {
+        this.playerNum = playerNum;
+        hand  = new ArrayList<>();
+    }
 
     /* Draws a card from the initial pile and removes it from the deck
      * If deck has six cards left, return null */
@@ -25,7 +31,7 @@ public class Player {
         hand.addAll(deck.cards);
         deck.cards.clear();
         sortHand();
-        System.out.println(hand);
+        System.out.println("Drawing last six cards..");
     }
 
     /* sort the player's hand based on suit and value */
@@ -36,7 +42,12 @@ public class Player {
     /* play the card at the given index */
     public Card playCard(int index) {
         Card card = hand.remove(index);
-        System.out.println(card.toString());
+        System.out.println("Player " + playerNum + ": " + card.toString());
         return card;
+    }
+
+    /* get which player this is */
+    public int getPlayerNum() {
+        return playerNum;
     }
 }

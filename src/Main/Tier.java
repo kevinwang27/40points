@@ -3,7 +3,9 @@ package Main;
 import Core.Card;
 import Core.Deck;
 import Core.Pair;
+import Core.Player;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -16,13 +18,27 @@ public class Tier {
     private Card.Suit trumpSuit;
     private Card[] pile;
     private Scanner reader;
+    private int indexOfFirstPlayer;
+    private ArrayList<Player> orderOfPlayers;
 
-    public Tier(Pair firstPair, Pair secondPair) {
+    public Tier(Pair firstPair, Pair secondPair, int indexOfFirstPlayer) {
         deck = new Deck();
         this.trumpTier = firstPair.tier;
         this.firstPair = firstPair;
         this.secondPair = secondPair;
+        pile = new Card[6];
         reader = new Scanner(System.in);
+        this.indexOfFirstPlayer = indexOfFirstPlayer;
+        this.orderOfPlayers = new ArrayList<>();
+        setOrderOfPlayers();
+    }
+
+    /* set the order of the players based on indexOfFirstPlayer */
+    private void setOrderOfPlayers() {
+        orderOfPlayers.add(firstPair.players[indexOfFirstPlayer]);
+        orderOfPlayers.add(secondPair.players[indexOfFirstPlayer]);
+        orderOfPlayers.add(firstPair.players[1 - indexOfFirstPlayer]);
+        orderOfPlayers.add(secondPair.players[1 - indexOfFirstPlayer]);
     }
 
     /* play a single tier and return the winning pair */
@@ -30,6 +46,7 @@ public class Tier {
         drawCards();
         Pair winnerPair = playRounds();
         clearHands();
+        clearPoints();
         return winnerPair;
     }
 
@@ -37,12 +54,11 @@ public class Tier {
     private Pair playRounds() {
         Pair winnerPair = firstPair;
         Pair loserPair = secondPair;
-        int playerOneIndex = 0;
         while (!tierOver()) {
             System.out.println("Next Round:\n");
-            Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, firstPair, playerOneIndex);
+            Round round = new Round(winnerPair, loserPair, trumpTier, trumpSuit, orderOfPlayers);
             winnerPair = round.playRound(reader);
-            playerOneIndex = round.getPlayerOneIndex();
+            orderOfPlayers = round.getOrderOfPlayers();
             printPlayerOneHand();
             if (winnerPair == firstPair) {
                 loserPair = secondPair;
@@ -61,15 +77,27 @@ public class Tier {
         for (int i = 0; i < firstPair.players.length; i++) {
             firstPair.players[i].hand.clear();
             secondPair.players[i].hand.clear();
-
         }
+    }
+
+    /* clear both pairs' points */
+    private void clearPoints() {
+        firstPair.points = 0;
+        secondPair.points = 0;
     }
 
     /* draw cards */
     private void drawCards() {
+        Player firstPlayer = firstPair.players[indexOfFirstPlayer];
         drawUntilSix();
-        firstPair.players[0].drawLastSix(deck);
-        playerOneChooseSixPile();
+        firstPlayer.drawLastSix(deck);
+        if (firstPlayer.getPlayerNum() == 1) {
+            printPlayerOneHand();
+            playerOneChooseSixPile();
+        } else {
+            compChooseSixPile(firstPlayer);
+        }
+        System.out.println("Pile: " + pile);
         printPlayerOneHand();
     }
 
@@ -77,10 +105,7 @@ public class Tier {
     private void drawUntilSix() {
         boolean suitPicked = false;
         while (!deck.sixLeft()) {
-            suitPicked = promptPlayerOneDraw(suitPicked);
-            secondPair.players[0].drawCard(deck);
-            firstPair.players[1].drawCard(deck);
-            secondPair.players[1].drawCard(deck);
+            suitPicked = drawRound(suitPicked);
         }
         if (trumpSuit == null) {
             System.out.println("No one called");
@@ -90,13 +115,26 @@ public class Tier {
         System.out.println("Trump suit is: " + trumpSuit);
     }
 
+    /* one round of card drawing */
+    private boolean drawRound(boolean suitPicked) {
+        for (Player player : orderOfPlayers) {
+            if (player.getPlayerNum() == 1) {
+                suitPicked = promptPlayerOneDraw(suitPicked);
+            } else {
+                player.drawCard(deck);
+            }
+        }
+        return suitPicked;
+    }
+    
     /* Prompt player one to draw and return whether a trump suit was picked */
     private boolean promptPlayerOneDraw(boolean suitPicked) {
         System.out.println("Press enter to draw");
         while (true) {
             if (reader.nextLine().equals("")) {
                 Card card = firstPair.players[0].drawCard(deck);
-                System.out.println(firstPair.players[0].hand);
+                System.out.println("Card drawn: " + card.toString());
+                printPlayerOneHand();
                 if (card.value == trumpTier && !suitPicked) {
                     System.out.println("Type call to call or press enter instead");
                     if (reader.nextLine().equals("call")) {
@@ -113,7 +151,6 @@ public class Tier {
     /* Player one chooses the six cards to set aside
      * Returns the pile of 6 */
     private void playerOneChooseSixPile() {
-        pile = new Card[6];
         Scanner reader = new Scanner(System.in);
         System.out.println("Enter indexes of cards you want to put in pile");
         String[] numbers = reader.nextLine().split(" ");
@@ -128,6 +165,13 @@ public class Tier {
         ints.sort(Collections.reverseOrder());
         for (int i = 0; i < ints.size(); i++) {
             pile[i] = firstPair.players[0].hand.remove((int) ints.get(i));
+        }
+    }
+
+    /* Given computer player selects the six cars to set aside */
+    private void compChooseSixPile(Player player) {
+        for (int i = 0; i < pile.length; i++) {
+            pile[i] = player.hand.remove(i);
         }
     }
 

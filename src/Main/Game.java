@@ -16,10 +16,10 @@ public class Game {
         Pair lastWinner;
         Pair tierWinner = pair1_3;
         Pair tierLoser = pair2_4;
+        int indexOfNextFirstPlayer = 0;
         while (!gameOver()) {
-            System.out.println("New Game:\n");
-            System.out.println("Current tier: " + tierWinner.tier);
-            Tier tier = new Tier(tierWinner, tierLoser);
+            System.out.println("New Game: \nCurrent tier: " + tierWinner.tier);
+            Tier tier = new Tier(tierWinner, tierLoser, indexOfNextFirstPlayer);
             lastWinner = tierWinner;
             tierWinner = tier.playTier();
             printPoints();
@@ -32,6 +32,7 @@ public class Game {
             }
             if (tierWinner == lastWinner) {
                 tierWinner.incrementTier();
+                indexOfNextFirstPlayer = 1 - indexOfNextFirstPlayer;
             }
         }
     }

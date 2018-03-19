@@ -2,6 +2,7 @@ package Main;
 
 import Core.Card;
 import Core.Pair;
+import Core.Player;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,45 +13,25 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
     private int trumpTier;
     private Card.Suit trumpSuit;
     private ArrayList<Card> roundCards;
-    private Pair pairWithPlayerOne;
-    private int playerOneIndex;
+    private ArrayList<Player> orderOfPlayers;
 
-    public Round(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, Pair pairWithPlayerOne, int playerOneIndex) {
+    public Round(Pair firstPair, Pair secondPair, int trumpTier, Card.Suit trumpSuit, ArrayList<Player> orderOfPlayers) {
         this.firstPair = firstPair;
         this.secondPair = secondPair;
         this.trumpTier = trumpTier;
         this.trumpSuit = trumpSuit;
         roundCards = new ArrayList<>();
-        this.pairWithPlayerOne = pairWithPlayerOne;
-        this.playerOneIndex = playerOneIndex;
+        this.orderOfPlayers = orderOfPlayers;
     }
 
     /* all players play a card in order
      * add the points to the winning pair and return the winner */
     public Pair playRound(Scanner reader) {
-        if (firstPair == pairWithPlayerOne) {
-            if (playerOneIndex == 0) {
+        for (Player player : orderOfPlayers) {
+            if (player.getPlayerNum() == 1) {
                 roundCards.add(promptPlayerOnePlay(reader));
-                roundCards.add(secondPair.players[0].playCard(0));
-                roundCards.add(firstPair.players[1].playCard(0));
-                roundCards.add(secondPair.players[1].playCard(0));
             } else {
-                roundCards.add(firstPair.players[1].playCard(0));
-                roundCards.add(secondPair.players[1].playCard(0));
-                roundCards.add(promptPlayerOnePlay(reader));
-                roundCards.add(secondPair.players[0].playCard(0));
-            }
-        } else {
-            if (playerOneIndex == 0) {
-                roundCards.add(firstPair.players[0].playCard(0));
-                roundCards.add(promptPlayerOnePlay(reader));
-                roundCards.add(firstPair.players[1].playCard(0));
-                roundCards.add(secondPair.players[1].playCard(0));
-            } else {
-                roundCards.add(firstPair.players[1].playCard(0));
-                roundCards.add(secondPair.players[1].playCard(0));
-                roundCards.add(firstPair.players[0].playCard(0));
-                roundCards.add(promptPlayerOnePlay(reader));
+                roundCards.add(player.playCard(0));
             }
         }
         Pair winnerPair = evaluateRoundWinner(roundCards);
@@ -59,8 +40,8 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
     }
 
     /* returns the player one index */
-    public int getPlayerOneIndex() {
-        return playerOneIndex;
+    public ArrayList<Player> getOrderOfPlayers() {
+        return orderOfPlayers;
     }
 
     /* evaluate how many points the round was worth */
@@ -80,71 +61,15 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
     /* evaluate who won the round based on suit, value, etc */
     private Pair evaluateRoundWinner(ArrayList<Card> roundCards) {
         int index = indexOfWinner(roundCards);
-        if (playerOneIndex == 0 && pairWithPlayerOne == firstPair) {
-            switch (index) {
-                case 0:
-                    playerOneIndex = 0;
-                    return firstPair;
-                case 1:
-                    playerOneIndex = 1;
-                    return secondPair;
-                case 2:
-                    playerOneIndex = 1;
-                    return firstPair;
-                case 3:
-                    playerOneIndex = 0;
-                    return secondPair;
-            }
+        Player winningPlayer = orderOfPlayers.get(index);
+        for (int i = 0; i < index; i++) {
+            orderOfPlayers.add(orderOfPlayers.remove(0));
         }
-        if (playerOneIndex == 0 && pairWithPlayerOne == secondPair) {
-            switch (index) {
-                case 0:
-                    playerOneIndex = 0;
-                    return firstPair;
-                case 1:
-                    playerOneIndex = 0;
-                    return secondPair;
-                case 2:
-                    playerOneIndex = 1;
-                    return firstPair;
-                case 3:
-                    playerOneIndex = 1;
-                    return secondPair;
-            }
+        if (firstPair.players[0].getPlayerNum() == winningPlayer.getPlayerNum()
+                || firstPair.players[1].getPlayerNum() == winningPlayer.getPlayerNum()) {
+            return firstPair;
         }
-        if (playerOneIndex == 1 && pairWithPlayerOne == firstPair) {
-            switch (index) {
-                case 0:
-                    playerOneIndex = 1;
-                    return firstPair;
-                case 1:
-                    playerOneIndex = 0;
-                    return secondPair;
-                case 2:
-                    playerOneIndex = 0;
-                    return firstPair;
-                case 3:
-                    playerOneIndex = 1;
-                    return secondPair;
-            }
-        }
-        if (playerOneIndex == 1 && pairWithPlayerOne == secondPair) {
-            switch (index) {
-                case 0:
-                    playerOneIndex = 1;
-                    return firstPair;
-                case 1:
-                    playerOneIndex = 1;
-                    return secondPair;
-                case 2:
-                    playerOneIndex = 0;
-                    return firstPair;
-                case 3:
-                    playerOneIndex = 0;
-                    return secondPair;
-            }
-        }
-        return firstPair;
+        return secondPair;
     }
 
     /* return the index of the winning card in roundCards
@@ -184,13 +109,23 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
 
     /* Prompt player one to play and return the card played */
     private Card promptPlayerOnePlay(Scanner reader) {
+        Player firstPlayer = getFirstPlayer();
         System.out.println("Enter index of card to play");
         int index = reader.nextInt();
-        while (index < 0 || index >= pairWithPlayerOne.players[playerOneIndex].hand.size()) {
+        while (index < 0 || index >= firstPlayer.hand.size()) {
             System.out.println("Please enter a valid index");
             index = reader.nextInt();
         }
-        Card card = pairWithPlayerOne.players[0].playCard(index);
+        Card card = firstPlayer.playCard(index);
         return card;
+    }
+
+    private Player getFirstPlayer() {
+        for (Player player : orderOfPlayers) {
+            if (player.getPlayerNum() == 1) {
+                return player;
+            }
+        }
+        return null;
     }
 }
