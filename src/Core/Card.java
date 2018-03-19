@@ -46,9 +46,9 @@ public class Card implements Comparable<Card> {
     }
 
     public enum Suit {
-        CLUBS, SPADES, DIAMONDS, HEARTS;
+        CLUBS, SPADES, DIAMONDS, HEARTS, TRUMP;
 
-        private static final Suit[] suits = values();
+        private static final Suit[] suits = new Suit[]{CLUBS, SPADES, DIAMONDS, HEARTS};
 
         public static Suit[] getSuits() {
             return suits;

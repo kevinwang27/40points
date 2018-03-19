@@ -112,7 +112,7 @@ public class Tier {
             if (player.getPlayerNum() == 1) {
                 suitPicked = promptPlayerOneDraw(suitPicked);
             } else {
-                player.drawCard(deck);
+                player.drawCard(deck, trumpSuit, trumpTier);
             }
         }
         return suitPicked;
@@ -123,7 +123,7 @@ public class Tier {
         System.out.println("Press enter to draw");
         while (true) {
             if (reader.nextLine().equals("")) {
-                Card card = firstPair.players[0].drawCard(deck);
+                Card card = firstPair.players[0].drawCard(deck, trumpSuit, trumpTier);
                 System.out.println("Card drawn: " + card.toString());
                 printPlayerOneHand();
                 if (card.value == trumpTier && !suitPicked) {

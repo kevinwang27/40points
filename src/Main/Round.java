@@ -31,7 +31,7 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
             if (player.getPlayerNum() == 1) {
                 roundCards.add(promptPlayerOnePlay(reader));
             } else {
-                roundCards.add(player.playCard(0));
+                roundCards.add(player.playCard(0, trumpSuit, trumpTier));
             }
         }
         Pair winnerPair = evaluateRoundWinner(roundCards);
@@ -116,7 +116,7 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
             System.out.println("Please enter a valid index");
             index = reader.nextInt();
         }
-        Card card = firstPlayer.playCard(index);
+        Card card = firstPlayer.playCard(index, trumpSuit, trumpTier);
         return card;
     }
 
@@ -129,4 +129,5 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
         }
         return null;
     }
+
 }
