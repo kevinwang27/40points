@@ -49,10 +49,9 @@ public class Player {
     /* play the card at the given index */
     public Card playCard(int index, Card.Suit trumpSuit, int trumpTier) {
         Card card = hand.remove(index);
-        if (card.suit != null) {
+        if (card.suit != null && !card.isTrump(trumpSuit, trumpTier)) {
             handSuits.put(card.suit, handSuits.get(card.suit) - 1);
-        }
-        if (card.value >= 15 || card.suit == trumpSuit || card.value == trumpTier) {
+        } else {
             handSuits.put(Card.Suit.TRUMP, handSuits.get(Card.Suit.TRUMP) - 1);
         }
         System.out.println("Player " + playerNum + ": " + card.toString());
@@ -62,10 +61,9 @@ public class Player {
     /* count the number of each suit in player's hand */
     public void setHandSuits(Card.Suit trumpSuit, int trumpTier) {
         for (Card card : hand) {
-            if (card.suit != null) {
+            if (card.suit != null && !card.isTrump(trumpSuit, trumpTier)) {
                 handSuits.put(card.suit, handSuits.get(card.suit) + 1);
-            }
-            if (card.value >= 15 || card.suit == trumpSuit || card.value == trumpTier) {
+            } else {
                 handSuits.put(Card.Suit.TRUMP, handSuits.get(Card.Suit.TRUMP) + 1);
             }
         }

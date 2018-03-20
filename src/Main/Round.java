@@ -4,11 +4,10 @@ import Core.Card;
 import Core.Pair;
 import Core.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Round { // restrict cards able to be played, computer calls trumpsuit
+public class Round { // computer calls trumpsuit
     private int trumpTier;
     private Pair firstPair;
     private Pair secondPair;
