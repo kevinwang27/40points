@@ -4,6 +4,7 @@ import Core.Card;
 import Core.Pair;
 import Core.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -155,7 +156,8 @@ public class Round { // restrict cards able to be played, computer calls trumpsu
         Player firstPlayer = getFirstPlayer();
         System.out.println("Enter index of card to play");
         int index = reader.nextInt();
-        while (index < 0 || index >= firstPlayer.hand.size()) {
+        ArrayList<Integer> indexes = indexesOfValidCards(firstPlayer);
+        while (index < 0 || index >= firstPlayer.hand.size() || !indexes.contains(index)) {
             System.out.println("Please enter a valid index");
             index = reader.nextInt();
         }
