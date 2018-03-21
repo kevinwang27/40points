@@ -12,6 +12,6 @@ Currently playable as a text-based game in the console.
 ## To Play
 
  - If you have git, clone the repository:
-   git clone https://github.com/kevinwang27/40points.git
+```git clone https://github.com/kevinwang27/40points.git```
  - If not, download the zip file
  - Run App.main() and play!
