@@ -2,6 +2,7 @@ package Main;
 
 import Core.Pair;
 import Core.Player;
+import GUI.GamePanel;
 
 /*
  * Main class for running the game
