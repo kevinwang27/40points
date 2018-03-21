@@ -50,6 +50,8 @@ public class CardButton extends JButton {
             case DIAMONDS:
                 this.image = SuitImages.getDiamond();
                 break;
+            default:
+                this.image = null;
         }
     }
 
@@ -64,9 +66,8 @@ public class CardButton extends JButton {
         Graphics2D g = (Graphics2D) gOld;
 
         Point p = (this.getMousePosition());
-        if(p != null){
-            if(this.contains(p))
-            {
+        if (p != null) {
+            if (this.contains(p)) {
                 g.setColor(Color.white);
                 g.drawRoundRect(0, 0, this.getWidth(), this.getHeight(), 10, 10);
             }
@@ -74,29 +75,29 @@ public class CardButton extends JButton {
     }
 
     private void paintCardBody(Graphics2D g) {
-        GradientPaint bodyGradient = new GradientPaint(200 - this.getWidth()/2,0, Color.white,
-                200- this.getWidth()/2, this.getHeight() + 250, Color.yellow);
+        GradientPaint bodyGradient = new GradientPaint(200 - this.getWidth() / 2, 0, Color.white,
+                200 - this.getWidth() / 2, this.getHeight() + 250, Color.yellow);
         g.setPaint(bodyGradient);
         g.fillRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 10, 10);
 
         g.setColor(Color.gray);
         g.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 10, 10);
 
-        double factor = 75/100.0;
+        double factor = 75 / 100.0;
         int imgDim;
-        if   (this.getWidth() < this.getHeight()) {
+        if (this.getWidth() < this.getHeight()) {
             imgDim = (int) (this.getWidth() * factor);
         } else {
             imgDim = (int) (this.getHeight() * factor);
         }
 
-        int xPos =  1 + (this.getWidth() - imgDim) / 2;
-        int yPos =  1 + (this.getHeight() - imgDim) / 2;
+        int xPos = 1 + (this.getWidth() - imgDim) / 2;
+        int yPos = 1 + (this.getHeight() - imgDim) / 2;
         g.drawImage(this.image, xPos, yPos, imgDim, imgDim, this);
 
-        int sxPos1  = 5;
+        int sxPos1 = 5;
         int syPos1 = 17;
-        int sxPos2  = this.getWidth() - (17 + ((this.label.length() - 1) * 5));
+        int sxPos2 = this.getWidth() - (17 + ((this.label.length() - 1) * 5));
         int syPos2 = this.getHeight() - 5;
         g.setFont(new Font("Arial", Font.BOLD, 14));
         g.setColor(Color.black);

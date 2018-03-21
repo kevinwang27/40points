@@ -31,7 +31,7 @@ public class SuitImages {
         return club;
     }
 
-    public static void BufferImages() throws IOException {
+    public static void bufferImages() throws IOException {
         spade = ImageIO.read(new File(path + "spade" + fileType));
         heart = ImageIO.read(new File(path + "heart" + fileType));
         diamond = ImageIO.read(new File(path + "diamond" + fileType));
