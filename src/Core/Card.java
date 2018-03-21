@@ -12,13 +12,33 @@ public class Card implements Comparable<Card> {
     }
 
     public String toString() {
-        if (suit != null) {
-            return value + " of " + suit.toString();
-        }
         if (value == 15) {
             return "SMALL JOKER";
+        } else if (value == 16) {
+            return "LARGE JOKER";
         }
-        return "LARGE JOKER";
+        else {
+            String name;
+            switch (value) {
+                case 11:
+                    name = "J";
+                    break;
+                case 12:
+                    name = "Q";
+                    break;
+                case 13:
+                    name = "K";
+                    break;
+                case 14:
+                    name = "A";
+                    break;
+                default:
+                    name = value + "";
+                    break;
+            }
+            return name + " of " + suit.toString();
+        }
+
     }
 
     @Override

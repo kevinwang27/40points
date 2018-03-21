@@ -120,7 +120,7 @@ public class Tier {
                 suitPicked = promptPlayerOneDraw(suitPicked);
             } else {
                 Card card = player.drawCard(deck);
-                if (card.value == trumpTier) {
+                if (card.value == trumpTier && !suitPicked) {
                     trumpSuit = card.suit;
                     System.out.println("\nPlayer " + player.getPlayerNum() + " called: " + trumpSuit);
                     suitPicked = true;

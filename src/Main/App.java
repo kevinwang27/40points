@@ -2,10 +2,6 @@ package Main;
 
 import Core.Pair;
 import Core.Player;
-import GUI.GamePanel;
-import GUI.SuitImages;
-
-import java.io.IOException;
 
 /*
  * Main class for running the game
