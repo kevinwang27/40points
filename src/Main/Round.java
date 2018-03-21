@@ -91,12 +91,7 @@ public class Round { // computer calls trumpsuit
     private int evaluateRoundPoints(ArrayList<Card> roundCards) {
         int roundPoints = 0;
         for (Card card : roundCards) {
-            int value = card.value;
-            if (value == 5) {
-                roundPoints += 5;
-            } else if (value == 10 || value == 13) {
-                roundPoints += 10;
-            }
+            roundPoints += card.points;
         }
         return roundPoints;
     }

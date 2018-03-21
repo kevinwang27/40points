@@ -65,6 +65,7 @@ public class Tier {
                 loserPair = firstPair;
             }
         }
+        winnerPair.points += getPilePoints();
         if (secondPair.points >= 40) {
             return secondPair;
         }
@@ -192,6 +193,14 @@ public class Tier {
         orderOfPlayers.add(secondPair.players[indexOfFirstPlayer]);
         orderOfPlayers.add(firstPair.players[1 - indexOfFirstPlayer]);
         orderOfPlayers.add(secondPair.players[1 - indexOfFirstPlayer]);
+    }
+
+    public int getPilePoints() {
+        int points = 0;
+        for (Card card : pile) {
+            points += card.points;
+        }
+        return points * 2;
     }
 
 }
