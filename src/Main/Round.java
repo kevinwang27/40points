@@ -120,7 +120,7 @@ public class Round { // computer calls trumpsuit
             Card card = roundCards.get(i);
             /* playing trump suit */
             if (initialCard.isTrump(trumpSuit, trumpTier) || maxCard.isTrump(trumpSuit, trumpTier)) {
-                if (card.value > maxCard.value && maxCard.value != trumpTier && card.suit == trumpSuit) {
+                if (card.value > maxCard.value && maxCard.value != trumpTier && card.isTrump(trumpSuit, trumpTier)) {
                     maxIndex = i;
                     maxCard = card;
                 } else if (maxCard.value == trumpTier && (card.value >= 15 ||
