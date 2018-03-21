@@ -17,16 +17,8 @@ public class App {
         Player player3 = new Player(3);
         Player player4 = new Player(4);
 
-        try {
-            Game game = new Game(new Pair(player1, player3), new Pair(player2, player4));
-            SuitImages.bufferImages();
-            GamePanel gamePanel = new GamePanel(player1);
-            gamePanel.display();
-            game.start(gamePanel);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Game game = new Game(new Pair(player1, player3), new Pair(player2, player4));
+        game.start();
     }
 
 }

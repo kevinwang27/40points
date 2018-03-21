@@ -4,9 +4,7 @@ import Core.Card;
 import Core.Deck;
 import Core.Pair;
 import Core.Player;
-import GUI.GamePanel;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -21,9 +19,8 @@ public class Tier {
     private Card.Suit trumpSuit;
     private Card[] pile;
     private Scanner reader;
-    private GamePanel gamePanel;
 
-    Tier(Pair firstPair, Pair secondPair, int indexOfFirstPlayer, GamePanel gamePanel) {
+    Tier(Pair firstPair, Pair secondPair, int indexOfFirstPlayer) {
         deck = new Deck();
         this.trumpTier = firstPair.tier;
         this.firstPair = firstPair;
@@ -32,7 +29,6 @@ public class Tier {
         reader = new Scanner(System.in);
         this.indexOfFirstPlayer = indexOfFirstPlayer;
         this.orderOfPlayers = new ArrayList<>();
-        this.gamePanel = gamePanel;
         setOrderOfPlayers();
         clearHands();
         clearPoints();
@@ -122,7 +118,6 @@ public class Tier {
         for (Player player : orderOfPlayers) {
             if (player.getPlayerNum() == 1) {
                 suitPicked = promptPlayerOneDraw(suitPicked);
-                gamePanel.updateCards(); // GUI
             } else {
                 Card card = player.drawCard(deck);
                 if (card.value == trumpTier) {
@@ -204,7 +199,7 @@ public class Tier {
         orderOfPlayers.add(secondPair.players[1 - indexOfFirstPlayer]);
     }
 
-    public int getPilePoints() {
+    private int getPilePoints() {
         int points = 0;
         for (Card card : pile) {
             points += card.points;

@@ -1,7 +1,6 @@
 package Main;
 
 import Core.Pair;
-import GUI.GamePanel;
 
 public class Game {
     private Pair pair1_3;
@@ -13,14 +12,14 @@ public class Game {
     }
 
     /* play the game */
-    public void start(GamePanel gamePanel) {
+    public void start() {
         Pair lastWinner;
         Pair tierWinner = pair1_3;
         Pair tierLoser = pair2_4;
         int indexOfNextFirstPlayer = 0;
         while (!gameOver()) {
             System.out.println("New Game: \nCurrent tier: " + tierWinner.tier);
-            Tier tier = new Tier(tierWinner, tierLoser, indexOfNextFirstPlayer, gamePanel);
+            Tier tier = new Tier(tierWinner, tierLoser, indexOfNextFirstPlayer);
             lastWinner = tierWinner;
             tierWinner = tier.playTier();
             printPoints();
